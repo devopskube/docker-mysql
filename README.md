@@ -30,6 +30,10 @@ If you find this image useful here's how you can help:
 - Help new users with [Issues](https://github.com/sameersbn/docker-mysql/issues) they may encounter
 - Support the development of this image with a [donation](http://www.damagehead.com/donate/)
 
+## Building
+
+If you would like to build this docker image, you are able to use our pyinvoke tasks script. This script is based on [Invoke](http://www.pyinvoke.org/), which is a python tool (nneds python on your machine) and can be installed using `pip install invoke`.
+
 # Reporting Issues
 
 Docker is a relatively new project and is active being developed and tested by a thriving community of developers and testers and every release of docker features many enhancements and bugfixes.
