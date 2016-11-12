@@ -16,6 +16,14 @@ podTemplate(label: 'docker-mysql', containers: [
   node() {
     stage('Preparation') { // for display purposes
       git url: 'https://github.com/devopskube/docker-mysql.git'
+
+      def TAG_NAME = binding.variables.get("TAG_NAME")
+      if (TAG_NAME != null) {
+        sh "echo $TAG_NAME"
+      } else {
+        sh "echo Non-tag build"
+      }
+      
       container('docker') {
         stage('Build the docker image') {
 
