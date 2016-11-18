@@ -22,7 +22,7 @@ podTemplate(label: 'docker-mysql', containers: [
             hostPathVolume(mountPath: "/var/run/docker.sock", hostPath: "/var/run/docker.sock")
         ]) {
     node() {
-        stage('checkout') { // happens on master?
+        stage('Checkout') { // happens on master?
             git url: 'https://github.com/devopskube/docker-mysql.git'
             tag_name = sh (
                     script: 'git tag -l --points-at HEAD',
@@ -31,25 +31,34 @@ podTemplate(label: 'docker-mysql', containers: [
 
             def projectFile = readFile("project.yml")
 
+            def dockerUser = env.DOCKER_USER
+            def dockerPwd = env.DOCKER_PWD
+
+            println "login in: ${dockerUser}:${dockerPwd}"
+
             Yaml yaml = new Yaml();
             Map map = (Map) yaml.load(projectFile);
             image_name = map.get("imageName")
 
         }
         container('docker') {
-            stage('Build the docker image') {
+            stage('Build') {
                 sh("docker build -t ${IMAGE_NAME} .")
             }
-            stage('tag the image') {
+            stage('Tag') {
                 sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:latest"
 
                 if (tag_name?.trim()) {
                     sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${tag_name}"
                 }
             }
-            stage('Push the image') {
+            stage('Push') {
+                def dockerUser = env.DOCKER_USER
+                def dockerPwd = env.DOCKER_PWD
+
+                println "login in: ${dockerUser}:${dockerPwd}"
+
 //                sh "docker push ${IMAGE_NAME}:latest"
-                println "push latest"
 
                 if (tag_name?.trim()) {
                     println "push ${tag_name}"
