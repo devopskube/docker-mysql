@@ -2,7 +2,7 @@
 
 **0.0.6 (WIP)**
 - Add latest version(s) to Changelog
-- Adjust Jenkinsfile (try docker plugin again)
+- Adjust README to reflect fork to devopskube
 **0.0.5**
 - Adjust Jenkinsfile, now we are able to build and push images
 - Adjust Makefile to push tags and latest commits

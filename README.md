@@ -27,8 +27,7 @@ Dockerfile to build a MySQL container image which can be linked to other contain
 If you find this image useful here's how you can help:
 
 - Send a Pull Request with your awesome new features and bug fixes
-- Help new users with [Issues](https://github.com/sameersbn/docker-mysql/issues) they may encounter
-- Support the development of this image with a [donation](http://www.damagehead.com/donate/)
+- Help new users with [Issues](https://github.com/devopskube/docker-mysql/issues) they may encounter
 
 ## Building
 
@@ -70,18 +69,16 @@ In your issue report please make sure you provide the following information:
 
 # Installation
 
-Automated builds of the image are available on [Dockerhub](https://hub.docker.com/r/sameersbn/mysql) and is the recommended method of installation.
-
-> **Note**: Builds are also available on [Quay.io](https://quay.io/repository/sameersbn/mysql)
+Automated builds of the image are available on [Dockerhub](https://hub.docker.com/r/devopskube/mysql) and is the recommended method of installation.
 
 ```bash
-docker pull sameersbn/mysql:latest
+docker pull devopskube/mysql:latest
 ```
 
 Alternately you can build the image yourself.
 
 ```bash
-docker build -t sameersbn/mysql github.com/sameersbn/docker-mysql
+docker build -t devopskube/mysql github.com/devopskube/docker-mysql
 ```
 
 # Quick Start
@@ -89,13 +86,13 @@ docker build -t sameersbn/mysql github.com/sameersbn/docker-mysql
 Run the mysql image
 
 ```bash
-docker run --name mysql -d sameersbn/mysql:latest
+docker run --name mysql -d devopskube/mysql:latest
 ```
 
 You can access the mysql server as the root user using the following command:
 
 ```bash
-docker run -it --rm --volumes-from=mysql sameersbn/mysql:latest mysql -uroot
+docker run -it --rm --volumes-from=mysql devopskube/mysql:latest mysql -uroot
 ```
 
 # Data Store
@@ -113,7 +110,7 @@ The updated run command looks like this.
 
 ```
 docker run --name mysql -d \
-  -v /opt/mysql/data:/var/lib/mysql sameersbn/mysql:latest
+  -v /opt/mysql/data:/var/lib/mysql devopskube/mysql:latest
 ```
 
 This will make sure that the data stored in the database is not lost when the image is stopped and started again.
@@ -127,7 +124,7 @@ This will make sure that the data stored in the database is not lost when the im
 > However if you were using this image before this feature was added, then it will not work as-is. You are required to create the `debian-sys-maint` user
 >
 >```bash
->docker run -it --rm --volumes-from=mysql sameersbn/mysql \
+>docker run -it --rm --volumes-from=mysql devopskube/mysql \
 >  mysql -uroot -e "GRANT ALL PRIVILEGES on *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '' WITH GRANT OPTION;"
 >```
 
@@ -135,14 +132,14 @@ To create a new database specify the database name in the `DB_NAME` variable. Th
 
 ```bash
 docker run --name mysql -d \
-  -e 'DB_NAME=dbname' sameersbn/mysql:latest
+  -e 'DB_NAME=dbname' devopskube/mysql:latest
 ```
 
 You may also specify a comma separated list of database names in the `DB_NAME` variable. The following command creates two new databases named *dbname1* and *dbname2*
 
 ```bash
 docker run --name mysql -d \
--e 'DB_NAME=dbname1,dbname2' sameersbn/mysql:latest
+-e 'DB_NAME=dbname1,dbname2' devopskube/mysql:latest
 ```
 
 To create a new user you should specify the `DB_USER` and `DB_PASS` variables.
@@ -150,7 +147,7 @@ To create a new user you should specify the `DB_USER` and `DB_PASS` variables.
 ```bash
 docker run --name mysql -d \
   -e 'DB_USER=dbuser' -e 'DB_PASS=dbpass' -e 'DB_NAME=dbname' \
-  sameersbn/mysql:latest
+  devopskube/mysql:latest
 ```
 
 The above command will create a user *dbuser* with the password *dbpass* and will also create a database named *dbname*. The *dbuser* user will have full/remote access to the database.
@@ -166,7 +163,7 @@ By default the new database will be created with the `utf8` character set and `u
 docker run --name mysql -d \
   -e 'DB_USER=dbuser' -e 'DB_PASS=dbpass' -e 'DB_NAME=dbname' \
   -e 'MYSQL_CHARSET=utf8mb4' -e 'MYSQL_COLLATION=utf8_bin' \
-  sameersbn/mysql:latest
+  devopskube/mysql:latest
 ```
 
 # Creating remote user with privileged access
@@ -176,7 +173,7 @@ To create a remote user with privileged access, you need to specify the `DB_REMO
 ```bash
 docker run --name mysql -d \
   -e 'DB_REMOTE_ROOT_NAME=root' -e 'DB_REMOTE_ROOT_PASS=secretpassword' \
-  sameersbn/mysql:latest
+  devopskube/mysql:latest
 ```
 
 Optionally you can specify the `DB_REMOTE_ROOT_HOST` variable to define the address space within which remote access should be permitted. This defaults to `172.17.0.1` and should suffice for most cases.
