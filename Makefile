@@ -11,4 +11,6 @@ build:
 bump:
 	@echo "Bumping Version"
 	bumpversion ${PART}
-	git push --tag
+	git push
+	git push origin --tags
+
