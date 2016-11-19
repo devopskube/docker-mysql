@@ -1,6 +1,8 @@
 # Docker MySql
 
-Based on [Docker Repository by Sameersbn](https://github.com/sameersbn/docker-mysql)
+Based on [Docker Repository by Sameersbn](https://github.com/sameersbn/docker-mysql).
+
+Please have a look at the [Dockerfile](https://github.com/devopskube/docker-mysql/blob/master/Dockerfile).
 
 Now we are creating 5.6 and not 5.5 anymore --> needed for sonarqube.
 
