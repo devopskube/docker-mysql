@@ -13,6 +13,8 @@ properties(projectProperties)
 def IMAGE_NAME = 'devopskube/mysql'
 def tag_name = ''
 def image_name = ''
+def dockerUser = "${System.env.'DOCKER_USER'}"
+def dockerPwd = "${System.env.'DOCKER_PWD'}"
 
 podTemplate(label: 'docker-mysql', containers: [
             containerTemplate(name: 'jnlp', image: 'jenkinsci/jnlp-slave:2.62-alpine', args: '${computer.jnlpmac} ${computer.name}'),
@@ -31,38 +33,38 @@ podTemplate(label: 'docker-mysql', containers: [
 
             def projectFile = readFile("project.yml")
 
-            def dockerUser = env.DOCKER_USER
-            def dockerPwd = env.DOCKER_PWD
-
-            println "login in: ${dockerUser}:${dockerPwd}"
-
             Yaml yaml = new Yaml();
             Map map = (Map) yaml.load(projectFile);
             image_name = map.get("imageName")
-
         }
         container('docker') {
             stage('Build') {
+                println("Build ${IMAGE_NAME}")
                 sh("docker build -t ${IMAGE_NAME} .")
             }
-            stage('Tag') {
+            stage('Tag and Push latest') {
+                println("Tagging ${IMAGE_NAME}:latest")
                 sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:latest"
 
-                if (tag_name?.trim()) {
-                    sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${tag_name}"
-                }
+                println("Login in to docker registry")
+                sh "docker login --username ${dockerUser} --password ${dockerPwd}"
+
+                println("pushing latest")
+                sh "docker push ${IMAGE_NAME}:latest"
             }
-            stage('Push') {
-                def dockerUser = env.DOCKER_USER
-                def dockerPwd = env.DOCKER_PWD
-
-                println "login in: ${dockerUser}:${dockerPwd}"
-
-//                sh "docker push ${IMAGE_NAME}:latest"
-
+            stage('Tag and Push concrete Tag') {
                 if (tag_name?.trim()) {
-                    println "push ${tag_name}"
-//                    sh "docker push ${IMAGE_NAME}:${tag_name}"
+                    println("Tagging ${IMAGE_NAME}:${tag_name}")
+                    sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${tag_name}"
+
+                    println("Login in to docker registry")
+                    sh "docker login --username ${dockerUser} --password ${dockerPwd}"
+
+                    println "pushing ${tag_name}"
+                    sh "docker push ${IMAGE_NAME}:${tag_name}"
+                }
+                else {
+                    println("Pushing concrete Tag not necessary")
                 }
             }
         }
