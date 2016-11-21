@@ -3,6 +3,8 @@
 **0.0.6 (WIP)**
 - Add latest version(s) to Changelog
 - Adjust README to reflect fork to devopskube
+- Remove unnecessary circle.yml
+- Rework Jenkinsfile
 **0.0.5**
 - Adjust Jenkinsfile, now we are able to build and push images
 - Adjust Makefile to push tags and latest commits
