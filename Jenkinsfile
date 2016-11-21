@@ -29,29 +29,29 @@ podTemplate(label: 'docker-mysql', containers: [
         }
         container('docker') {
             stage('Build') {
-                println("Build ${IMAGE_NAME}")
-                sh("docker build -t ${IMAGE_NAME} .")
+                println("Build ${image_name}")
+                sh("docker build -t ${image_name} .")
             }
             stage('Tag and Push latest') {
-                println("Tagging ${IMAGE_NAME}:latest")
-                sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:latest"
+                println("Tagging ${image_name}:latest")
+                sh "docker tag ${image_name} ${image_name}:latest"
 
                 println("Login in to docker registry")
                 sh "docker login --username ${dockerUser} --password ${dockerPwd}"
 
                 println("pushing latest")
-                sh "docker push ${IMAGE_NAME}:latest"
+                sh "docker push ${image_name}:latest"
             }
             stage('Tag and Push concrete Tag') {
                 if (tag_name?.trim()) {
-                    println("Tagging ${IMAGE_NAME}:${tag_name}")
-                    sh "docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${tag_name}"
+                    println("Tagging ${image_name}:${tag_name}")
+                    sh "docker tag ${image_name} ${image_name}:${tag_name}"
 
                     println("Login in to docker registry")
                     sh "docker login --username ${dockerUser} --password ${dockerPwd}"
 
                     println "pushing ${tag_name}"
-                    sh "docker push ${IMAGE_NAME}:${tag_name}"
+                    sh "docker push ${image_name}:${tag_name}"
                 }
                 else {
                     println("Pushing concrete Tag not necessary")
