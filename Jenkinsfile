@@ -1,6 +1,4 @@
 #!/usr/bin/env groovy
-# This is WIP and needs some love
-
 /* Only keep the 5 most recent builds. */
 def projectProperties = [
         buildDiscarder(logRotator(numToKeepStr: '5')),
