@@ -1,7 +1,4 @@
 #!/usr/bin/env groovy
-@Grab('org.yaml:snakeyaml:1.17')
-import org.yaml.snakeyaml.*
-
 /* Only keep the 5 most recent builds. */
 def projectProperties = [
         buildDiscarder(logRotator(numToKeepStr: '5')),
@@ -10,9 +7,8 @@ def projectProperties = [
 ]
 properties(projectProperties)
 
-def IMAGE_NAME = 'devopskube/mysql'
 def tag_name = ''
-def image_name = ''
+def image_name = 'devopskube/mysql'
 def dockerUser = "${System.env.'DOCKER_USER'}"
 def dockerPwd = "${System.env.'DOCKER_PWD'}"
 
@@ -31,11 +27,6 @@ podTemplate(label: 'docker-mysql', containers: [
                     returnStdout: true
             ).trim()
 
-            def projectFile = readFile("project.yml")
-
-            Yaml yaml = new Yaml();
-            Map map = (Map) yaml.load(projectFile);
-            image_name = map.get("imageName")
         }
         container('docker') {
             stage('Build') {
