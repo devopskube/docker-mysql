@@ -9,8 +9,8 @@ properties(projectProperties)
 
 def tag_name = ''
 def image_name = 'devopskube/mysql'
-def dockerUser = "${System.env.'DOCKER_USER'}"
-def dockerPwd = "${System.env.'DOCKER_PWD'}"
+def dockerUser = "${env.'DOCKER_USER'}"
+def dockerPwd = "${env.'DOCKER_PWD'}"
 
 podTemplate(label: 'docker-mysql', containers: [
             containerTemplate(name: 'jnlp', image: 'jenkinsci/jnlp-slave:2.62-alpine', args: '${computer.jnlpmac} ${computer.name}'),
@@ -26,7 +26,6 @@ podTemplate(label: 'docker-mysql', containers: [
                     script: 'git tag -l --points-at HEAD',
                     returnStdout: true
             ).trim()
-
         }
         container('docker') {
             stage('Build') {
