@@ -12,6 +12,9 @@ def image_name = 'devopskube/mysql'
 def dockerUser = "${env.'DOCKER_USER'}"
 def dockerPwd = "${env.'DOCKER_PWD'}"
 
+println("dockerUser: ${env.'DOCKER_USER'}")
+println("dockerUser2: ${System.properties.'DOCKER_USER'}")
+
 podTemplate(label: 'docker-mysql', containers: [
             containerTemplate(name: 'jnlp', image: 'jenkinsci/jnlp-slave:2.62-alpine', args: '${computer.jnlpmac} ${computer.name}'),
             containerTemplate(name: 'docker', image: 'docker:1.12.3-dind', ttyEnabled: true, command: 'cat', privileged: true, instanceCap: 1)
